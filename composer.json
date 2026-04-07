@@ -16,6 +16,7 @@
         "spatie/laravel-activitylog": "^5.0",
         "spatie/laravel-data": "*",
         "spatie/laravel-medialibrary": "^11.21",
+        "spatie/laravel-model-states": "^2.13",
         "spatie/laravel-tags": "^4.11"
     },
     "require-dev": {
