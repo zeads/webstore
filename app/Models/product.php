@@ -9,7 +9,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Tags\HasTags;
 
-class product extends Model implements HasMedia
+class Product extends Model implements HasMedia
 {
     use InteractsWithMedia, HasTags;
 
