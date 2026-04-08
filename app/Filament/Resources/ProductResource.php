@@ -7,10 +7,13 @@ use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
+use Filament\Forms\Components\SpatieTagsInput;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -26,9 +29,12 @@ class ProductResource extends Resource
         return $form
             ->schema([
                 Section::make()->schema([
+                    SpatieMediaLibraryFileUpload::make('cover')->collection('cover')->label('Cover'),
+                    SpatieMediaLibraryFileUpload::make('gallery')->collection('gallery')->label('Gallery')->multiple(),
                     TextInput::make('name')->label('Product Name')->required(),
-                    TextInput::make('sku')->label('SKU')->unique(),
-                    TextInput::make('slug')->label('Slug')->unique(),
+                    TextInput::make('sku')->label('SKU')->unique(ignoreRecord: true),
+                    TextInput::make('slug')->label('Slug')->unique(ignoreRecord: true),
+                    SpatieTagsInput::make('tags')->type('collection')->label('Collection Tags'),
                     TextInput::make('description')->label('Description')->nullable(),
                     TextInput::make('stock')->numeric()->default(0)->label('Stock')->default(0),
                     TextInput::make('price')->numeric()->prefix('Rp ')->label('Price')->default(0),
@@ -41,7 +47,11 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('name')->label('Product Name'),
+                TextColumn::make('sku')->label('SKU'),
+                TextColumn::make('description')->label('Description'),
+                TextColumn::make('stock')->label('Stock'),
+                TextColumn::make('price')->label('Price'),
             ])
             ->filters([
                 //
