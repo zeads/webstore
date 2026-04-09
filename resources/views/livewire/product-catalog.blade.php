@@ -74,7 +74,9 @@
                         Product Not Found
                     </div>
                 @endforelse
-
+            </div>
+            <div>
+                {{ $products->links() }}
             </div>
         </div>
     </div>

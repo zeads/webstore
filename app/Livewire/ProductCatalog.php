@@ -10,7 +10,7 @@ class ProductCatalog extends Component
 {
     public function render()
     {
-        $result = Product::paginate(9);
+        $result = Product::paginate(1);
 
         $products = ProductData::collect($result);
 
