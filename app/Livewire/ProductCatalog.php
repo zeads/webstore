@@ -19,15 +19,35 @@ class ProductCatalog extends Component
     public $queryString = [
         'select_collection' => ['except' => []],
         'search' => ['except' => ''],
-        'order_by' => ['except' => 'newest'],
+        'sort_by' => ['except' => 'newest'],
     ];
 
     public array $select_collection = [];
     public string $search = '';
     public string $sort_by = 'newest';
 
+    public function mount()
+    {
+        // $this->select_collection = request()->input('select_collection', []);
+        // $this->search = request()->input('search', '');
+        // $this->sort_by = request()->input('sort_by', 'newest');
+        $this->validate(); //menjalankan rules() di url
+    }
+
+    protected function rules()
+    {
+        return [
+            'select_collection' => 'array',
+            'select_collection.*' => 'integer|exists:tags,id',
+            'search' => 'nullable|string|min:3|max:30',
+            'sort_by' => 'in:newest,latest,price_asc,price_desc',
+        ];
+    }
+
     public function applyFilter()
     {
+        $this->validate(); //menjalankan rules()
+
         // dd($this->select_collection, $this->search, $this->order_by);
         $this->resetPage();
     }
@@ -37,11 +57,21 @@ class ProductCatalog extends Component
         $this->select_collection = [];
         $this->search = '';
         $this->sort_by = 'newest';
+
+        $this->resetErrorBag();
         $this->resetPage();
     }
 
     public function render()
     {
+        // Early Return
+        $collections = ProductCollectionData::collect([]);
+        $products = ProductData::collect([]);
+
+        if($this->getErrorBag()->isNotEmpty()) {
+            return view('livewire.product-catalog', compact('products', 'collections'));
+        }
+
         $collection_result = Tag::query()->withType('collection')->withCount('products')->get();
         // $result = Product::paginate(1);
 
