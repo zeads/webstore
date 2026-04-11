@@ -6,6 +6,7 @@ use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Product;
 use Filament\Forms;
+use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\SpatieTagsInput;
@@ -35,7 +36,8 @@ class ProductResource extends Resource
                     TextInput::make('sku')->label('SKU')->unique(ignoreRecord: true),
                     TextInput::make('slug')->label('Slug')->unique(ignoreRecord: true),
                     SpatieTagsInput::make('tags')->type('collection')->label('Collection Tags'),
-                    TextInput::make('description')->label('Description')->nullable(),
+                    MarkdownEditor::make('description')->label('Description')->nullable(),
+                    // TextInput::make('description')->label('Description')->nullable(),
                     TextInput::make('stock')->numeric()->default(0)->label('Stock')->default(0),
                     TextInput::make('price')->numeric()->prefix('Rp ')->label('Price')->default(0),
                     TextInput::make('weight')->numeric()->suffix('gram')->label('Weight')->default(0),
