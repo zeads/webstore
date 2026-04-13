@@ -25,7 +25,7 @@
                 </div>
                 <div>
                     <div class="flex items-center gap-2 my-5">
-                        <livewire:add-to-cart />
+                        <livewire:add-to-cart :product="$product" />
                     </div>
                 </div>
                 <div>
