@@ -14,7 +14,7 @@ class AddToCart extends Component
     public float $price;
     public int $stock;
     public int $weight;
-    public string $label = 'Add to cart';
+    public string $label = 'Add to Cart';
 
     // Method bawaan livewire
     public function mount(ProductData $product, CartServiceInterface $cart)
@@ -47,6 +47,8 @@ class AddToCart extends Component
             price: $this->price,
             weight: $this->weight
         ));
+
+        $this->dispatch('cart-updated');
     }
 
     public function render()
