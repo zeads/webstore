@@ -7,6 +7,8 @@ use App\Data\CartItemData;
 use App\Data\ProductData;
 use Livewire\Component;
 
+
+
 class AddToCart extends Component
 {
     public int $quantity;
@@ -47,6 +49,8 @@ class AddToCart extends Component
             price: $this->price,
             weight: $this->weight
         ));
+
+        session()->flash('success','Item added to cart');
 
         $this->dispatch('cart-updated');
 
