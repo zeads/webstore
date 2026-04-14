@@ -26,6 +26,8 @@
                                             {{ $item->product()->price_formatted }}
                                         </p>
 
+                                        <livewire:cart-item-remove :product="$item->product()" />
+
 
                                     </div>
                                 </div>
