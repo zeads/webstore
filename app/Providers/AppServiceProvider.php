@@ -32,9 +32,11 @@ class AppServiceProvider extends ServiceProvider
 
         Gate::define('is_stock_available', function (User $user = null) {
            try {
-            ValidateCartStock::run();
+                ValidateCartStock::run();
+                return true;
            } catch (ValidationException $e) {
-            session()->flash('error', $e->getMessage());
+                session()->flash('error', $e->getMessage());
+                return false;
            }
         });
 
