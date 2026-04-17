@@ -4,9 +4,11 @@ namespace App\Livewire;
 
 use App\Contract\CartServiceInterface;
 use App\Data\CartData;
+use App\Data\RegionData;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Number;
 use Livewire\Component;
+use Spatie\LaravelData\DataCollection;
 
 class Checkout extends Component
 {
@@ -15,6 +17,12 @@ class Checkout extends Component
         'email' => null,
         'phone' => null,
         'address_line' => null,
+        'destination_region_code' => null,
+    ];
+
+    public array $region_selector = [
+        'keyword' => null,
+        'region_selected' => null
     ];
 
     public array $summaries = [
@@ -42,6 +50,7 @@ class Checkout extends Component
             'data.email' => ['required', 'email:rfc,dns', 'max:255'],
             'data.phone' => ['required', 'min:3', 'max:255'],
             'data.shipping_line' => ['required', 'min:3', 'max:255'],
+            'data.destination_region_code' => ['required'],
         ];
     }
 
@@ -62,6 +71,50 @@ class Checkout extends Component
     public function getCartProperty(CartServiceInterface $cart) : CartData
     {
         return $cart->all();
+    }
+
+    public function getRegionsProperty() : DataCollection
+    {
+        $data = [
+            [
+                'code' => 'JKT',
+                'province' => 'DKI Jakarta',
+                'city' => 'Jakarta',
+                'district' => 'Jakarta Utara',
+                'sub_district' => 'Jakarta Utara',
+                'postal_code' => '12345',
+            ],
+            [
+                'code' => 'BKS',
+                'province' => 'Banten',
+                'city' => 'Tangerang',
+                'district' => 'Tangerang',
+                'sub_district' => 'Tangerang',
+                'postal_code' => '12345',
+            ],
+        ];
+
+        if(!data_get($this->region_selector, 'keyword')) {
+            $data = [];
+        }
+
+        return new DataCollection(RegionData::class, $data);
+    }
+
+    public function getRegionProperty() : ?RegionData
+    {
+        $region_selected = $this->region_selector['region_selected'];
+        if(!$region_selected) {
+            return null;
+        }
+
+        return $this->regions->toCollection()->first(fn (RegionData $region) => $region->code === $region_selected);
+    }
+
+    public function updatedRegionSelectorRegionSelected($value)
+    {
+        // dd($value);
+        data_set($this->data, 'destination_region_code', $value);
     }
 
     public function placeAnOrder()
