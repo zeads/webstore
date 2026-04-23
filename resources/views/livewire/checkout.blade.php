@@ -50,10 +50,10 @@
                     </label>
 
                     <div class="mt-2 space-y-3">
-                        <input id="af-payment-billing-address" type="text" wire:model="data.shipping_line"
-                            class="@error('data.shipping_line') border-red-600 @enderror py-1.5 sm:py-2 px-3 pe-11 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                        <input id="af-payment-billing-address" type="text" wire:model="data.address_line"
+                            class="@error('data.address_line') border-red-600 @enderror py-1.5 sm:py-2 px-3 pe-11 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                             placeholder="Street Address">
-                            @error('data.shipping_line')
+                            @error('data.address_line')
                                 <p class="mt-2 text-xs text-red-600" id="hs-validation-name-error-helper">
                                     {{ $message }}</p>
                             @enderror
@@ -158,9 +158,13 @@
                 <label for="af-payment-method" class="inline-block mt-5 text-sm font-medium dark:text-white">
                     Payment Method
                 </label>
+                @error('data.payment_method_hash')
+                <p class="mt-2 text-xs text-red-600" id="hs-validation-name-error-helper">
+                    {{ $message }}</p>
+                @enderror
                 <div class="mt-2 space-y-3">
                     <div class="grid space-y-2">
-                        @php
+                        {{-- @php
                             $payment_methods = [
                                 'Bank Transfer - BCA',
                                 'Bank Transfer - BNI',
@@ -168,15 +172,19 @@
                                 'QRIS',
                                 'Dana',
                             ];
-                        @endphp
-                        @foreach ($payment_methods as $key => $item)
-                            <label for="payment_method_{{ $key }}"
+                        @endphp --}}
+                        {{-- @foreach ($payment_methods as $key => $item) --}}
+                        @foreach ($this->payment_methods->toCollection() as $key => $payment_method)
+                            <label for="payment_method_{{ $payment_method->hash }}"
                                 class="flex w-full p-2 text-sm bg-white border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
-                                <input type="radio" name="hs-vertical-radio-in-form"
+                                <input type="radio"
+                                    wire:key="payment-method-{{ $payment_method->hash }}"
+                                    wire:model.live='payment_method_selector.payment_method_selected'
+                                    value="{{ $payment_method->hash }}"
                                     class="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 checked:border-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
-                                    id="payment_method_{{ $key }}">
+                                    id="payment_method_{{ $payment_method->hash }}">
                                 <span
-                                    class="text-sm text-gray-500 ms-3 dark:text-neutral-400">{{ $item }}</span>
+                                    class="text-sm text-gray-500 ms-3 dark:text-neutral-400">{{ $payment_method->label }}</span>
                             </label>
                         @endforeach
 
