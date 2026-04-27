@@ -64,6 +64,11 @@ class SessionCartService implements CartServiceInterface
         $this->save($cart);
     }
 
+    public function clear() : void
+    {
+        Session::forget($this->sessionKey);
+    }
+
     public function getItemBySku(string $sku) : ?CartItemData
     {
         return $this->load()->toCollection()->first(fn(CartItemData $i) => $i->sku === $sku);

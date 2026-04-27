@@ -10,6 +10,7 @@ class SalesOrder extends Model
     protected $with = ['items'];
 
     protected $casts = [
+        'due_date_at' => 'datetime',
         'payment_payload' => 'json',
     ];
 
