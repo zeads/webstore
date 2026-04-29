@@ -65,9 +65,9 @@ class SalesOrderData extends Data
             trx_id: $sales_order->trx_id,
             status: $sales_order->status,
             customer: new CustomerData(
-                full_name: $sales_order->customer->full_name,
-                email: $sales_order->customer->email,
-                phone: $sales_order->customer->phone,
+                full_name: $sales_order->customer_full_name,
+                email: $sales_order->customer_email,
+                phone: $sales_order->customer_phone,
             ),
             address_line: $sales_order->address_line,
             origin: new RegionData(
@@ -106,7 +106,8 @@ class SalesOrderData extends Data
             sub_total: $sales_order->sub_total,
             shipping_cost: $sales_order->shipping_total,
             total: $sales_order->total,
-            due_date_at: $sales_order->due_date_at,
+            // due_date_at: $sales_order->due_date_at,
+            due_date_at: Carbon::parse($sales_order->due_date_at),
             created_at: $sales_order->created_at
         );
     }
