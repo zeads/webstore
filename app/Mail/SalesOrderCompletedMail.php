@@ -11,7 +11,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class SalesOrderCreatedMail extends Mailable
+class SalesOrderCompletedMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -31,7 +31,7 @@ class SalesOrderCreatedMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: "Halo, {$this->sales_order->customer->full_name} Pesanan Nomor #{$this->sales_order->trx_id} Sudah Kami Terima",
+            subject: "Halo, {$this->sales_order->customer->full_name} Pesanan Nomor #{$this->sales_order->trx_id} Sudah Selesai",
             to: $this->sales_order->customer->email
         );
     }
@@ -42,7 +42,7 @@ class SalesOrderCreatedMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'mail.orders.created',
+            markdown: 'mail.orders.completed',
         );
     }
 
