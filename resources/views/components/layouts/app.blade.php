@@ -23,5 +23,6 @@
 
         <x-footer />
         {{-- @livewireScripts --}}
+        <x-toast />
     </body>
 </html>
