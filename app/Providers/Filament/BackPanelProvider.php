@@ -22,6 +22,8 @@ use Jeffgreco13\FilamentBreezy\BreezyCore;
 use Livewire\Livewire;
 use Jeffgreco13\FilamentBreezy\Livewire\PersonalInfo;
 
+use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
+
 
 class BackPanelProvider extends PanelProvider
 {
@@ -69,6 +71,7 @@ class BackPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->plugins([
+                FilamentShieldPlugin::make(),
                 BreezyCore::make()
                 ->myProfile(
                     shouldRegisterUserMenu: true, // Sets the 'account' link in the panel User Menu (default = true)
