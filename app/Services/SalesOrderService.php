@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Data\SalesOrderData;
+use App\Data\SalesOrderItemData;
 use App\Events\ShippingReceiptNumberUpdateEvent;
+use App\Models\Product;
 use App\Models\SalesOrder;
+use Illuminate\Support\Facades\DB;
 
 class SalesOrderService
 {
@@ -44,6 +47,17 @@ class SalesOrderService
 
         // Kembalikan data yang paling segar dari DB
         return SalesOrderData::fromModel($order->fresh());
+    }
+
+    public function returnStock(SalesOrderData $sales_order) : void
+    {
+        $sales_order->items->toCollection()->each(function(SalesOrderItemData $item){
+            DB::transaction(function () use ($item) {
+                Product::lockForUpdate()->update([
+                    'stock' => $item->quantity
+                ]);
+            });
+        });
     }
 
 }
