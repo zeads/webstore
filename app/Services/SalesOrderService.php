@@ -27,4 +27,23 @@ class SalesOrderService
         return $data;
     }
 
+    public function updateShippingPayload(SalesOrderData $sales_order, array $payload) : SalesOrderData
+    {
+        // SalesOrder::where('trx_id', $sales_order->trx_id)->update([
+        //     'payment_payload' => array_merge($sales_order->payment->payload, $payload)
+        // ]);
+
+        // return SalesOrderData::fromModel(
+        //     SalesOrder::where('trx_id', $sales_order->trx_id)->first()
+        // );
+        $order = SalesOrder::where('trx_id', $sales_order->trx_id)->first();
+
+        $order->update([
+            'payment_payload' => array_merge($sales_order->payment->payload, $payload)
+        ]);
+
+        // Kembalikan data yang paling segar dari DB
+        return SalesOrderData::fromModel($order->fresh());
+    }
+
 }

@@ -70,9 +70,12 @@ class APIKurirShippingDriver implements ShippingDriverInterface
             'services' => [$shipping_service->service]
         ]);
 
-        // dd($response);
+        // if ($response->failed()) {
+        //     dd($response->json()); // Lihat pesan error dari APIKurir di sini
+        // }
+
         $data = $response->collect('data')->flatten(1)->values()->first();
-        dd($data);
+
         if(empty($data)){
             return null;
         }

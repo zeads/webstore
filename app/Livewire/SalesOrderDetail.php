@@ -15,10 +15,19 @@ class SalesOrderDetail extends Component
     {
         $service = app(PaymentMethodQueryService::class);
         $sales_order_data = SalesOrderData::fromModel($this->sales_order);
+
+        // return view('livewire.sales-order-detail', [
+        //     'order' => $sales_order_data,
+        //     'is_redirect' => $service->shouldShowButton($sales_order_data),
+        //     'redirect_url' => $service->getRedirectUrl($sales_order_data),
+        // ]);
+
+        $url = $service->getRedirectUrl($sales_order_data);
+
         return view('livewire.sales-order-detail', [
             'order' => $sales_order_data,
             'is_redirect' => $service->shouldShowButton($sales_order_data),
-            'redirect_url' => $service->getRedirectUrl($sales_order_data),
+            'redirect_url' => $url,
         ]);
     }
 }
